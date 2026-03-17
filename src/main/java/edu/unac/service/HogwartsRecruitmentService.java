@@ -22,7 +22,8 @@ public class HogwartsRecruitmentService {
 
         List<Character> characters = potterApiClient.searchCharacter(searchName);
 
-        if (characters == null || characters.isEmpty()) {
+        if (characters == null
+                || characters.isEmpty()) {
             throw new CharacterNotFoundException("Character not found");
         }
 
@@ -45,7 +46,9 @@ public class HogwartsRecruitmentService {
             return false;
         }
 
-        if (age < 18 || (selected.getChildren() != null && !selected.getChildren().isEmpty())) {
+        if (age < 18 ||
+                (selected.getChildren() != null
+                        && !selected.getChildren().isEmpty())) {
             return false;
         }
 
