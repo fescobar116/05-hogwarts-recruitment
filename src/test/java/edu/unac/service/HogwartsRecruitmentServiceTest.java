@@ -82,6 +82,48 @@ class HogwartsRecruitmentServiceTest {
         assertTrue(result);
     }
 
+    @Test
+    void shouldAllowSpecialAccessForGryffindorLowIndexTeen() {
+        PotterApiClient potterApiClient = mock(PotterApiClient.class);
+        HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
+
+        Character character = Character.builder()
+                .fullName("Neville Longbottom")
+                .hogwartsHouse("Gryffindor")
+                .birthdate("Jul 30, 2012")
+                .children(List.of())
+                .index(10)
+                .build();
+
+        when(potterApiClient.searchCharacter("Longbottom"))
+                .thenReturn(List.of(character));
+
+        boolean result = service.canJoinMission("Longbottom");
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldAllowSpecialAccessForGryffindorLowIndexTeenBoundary() {
+        PotterApiClient potterApiClient = mock(PotterApiClient.class);
+        HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
+
+        Character character = Character.builder()
+                .fullName("Neville Longbottom")
+                .hogwartsHouse("Gryffindor")
+                .birthdate("Jul 30, 2012")
+                .children(List.of())
+                .index(20)
+                .build();
+
+        when(potterApiClient.searchCharacter("Longbottom"))
+                .thenReturn(List.of(character));
+
+        boolean result = service.canJoinMission("Longbottom");
+
+        assertFalse(result);
+    }
+
 
 
     @Test

@@ -29,7 +29,7 @@ public class HogwartsRecruitmentService {
 
         Character selected = characters.stream()
                 .min(Comparator.comparingInt(Character::getIndex))
-                .orElseThrow(() -> new CharacterNotFoundException("Character not found"));
+                .get();
 
         if (!isAllowedHouse(selected)) {
             return false;
