@@ -46,13 +46,13 @@ public class HogwartsRecruitmentService {
             return false;
         }
 
-        if (age < 18 ||
+        if (age >= 40 ||
                 (selected.getChildren() != null
                         && !selected.getChildren().isEmpty())) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private boolean isAllowedHouse(Character character) {

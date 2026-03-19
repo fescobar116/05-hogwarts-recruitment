@@ -169,6 +169,27 @@ class HogwartsRecruitmentServiceTest {
     }
 
     @Test
+    void shouldReturnFalseWhenAgeEqualsThan16() {
+        PotterApiClient potterApiClient = mock(PotterApiClient.class);
+        HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
+
+        Character character = Character.builder()
+                .fullName("Young Wizard")
+                .hogwartsHouse("Ravenclaw")
+                .birthdate("Jan 1, 2010")
+                .children(List.of("First Child"))
+                .index(50)
+                .build();
+
+        when(potterApiClient.searchCharacter("Young"))
+                .thenReturn(List.of(character));
+
+        boolean result = service.canJoinMission("Young");
+
+        assertTrue(result);
+    }
+
+    @Test
     void shouldReturnFalseWhenAgeLessThan18AndNoChildren() {
         PotterApiClient potterApiClient = mock(PotterApiClient.class);
         HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
@@ -190,14 +211,14 @@ class HogwartsRecruitmentServiceTest {
     }
 
     @Test
-    void shouldAllowAccessWhenAgeAbove18() {
+    void shouldAllowAccessWhenAgeAbove40() {
         PotterApiClient potterApiClient = mock(PotterApiClient.class);
         HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
 
         Character character = Character.builder()
                 .fullName("Adult Wizard")
                 .hogwartsHouse("Ravenclaw")
-                .birthdate("Jan 1, 1990")
+                .birthdate("Jan 1, 1986")
                 .children(List.of())
                 .index(50)
                 .build();
@@ -211,14 +232,14 @@ class HogwartsRecruitmentServiceTest {
     }
 
     @Test
-    void shouldAllowAccessWhenAgeAbove18NullChildren() {
+    void shouldAllowAccessWhenAgeAbove40NullChildren() {
         PotterApiClient potterApiClient = mock(PotterApiClient.class);
         HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
 
         Character character = Character.builder()
                 .fullName("Adult Wizard")
                 .hogwartsHouse("Ravenclaw")
-                .birthdate("Jan 1, 1990")
+                .birthdate("Jan 1, 1960")
                 .children(null)
                 .index(50)
                 .build();
@@ -232,7 +253,28 @@ class HogwartsRecruitmentServiceTest {
     }
 
     @Test
-    void shouldAllowAccessWhenAgeAbove18WithChildren() {
+    void shouldAllowAccessWhenAgeAbove40WithChildren() {
+        PotterApiClient potterApiClient = mock(PotterApiClient.class);
+        HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
+
+        Character character = Character.builder()
+                .fullName("Adult Wizard")
+                .hogwartsHouse("Ravenclaw")
+                .birthdate("Jan 1, 1960")
+                .children(List.of("First Child"))
+                .index(50)
+                .build();
+
+        when(potterApiClient.searchCharacter("Adult"))
+                .thenReturn(List.of(character));
+
+        boolean result = service.canJoinMission("Adult");
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldAllowAccessWhenAWithoutChildren() {
         PotterApiClient potterApiClient = mock(PotterApiClient.class);
         HogwartsRecruitmentService service = new HogwartsRecruitmentService(potterApiClient);
 
@@ -240,7 +282,7 @@ class HogwartsRecruitmentServiceTest {
                 .fullName("Adult Wizard")
                 .hogwartsHouse("Ravenclaw")
                 .birthdate("Jan 1, 1990")
-                .children(List.of("First Child"))
+                .children(null)
                 .index(50)
                 .build();
 
